@@ -1,0 +1,17 @@
+sqoop import --connect jdbc:mysql://localhost/movielens --driver com.mysql.jdbc.Driver --table movies -m 1 # -m 1 because there is only one cluster
+
+sqoop import --connect jdbc:mysql://localhost/movielens --driver com.mysql.jdbc.Driver --table movies -m 1 # -m 1 --hive-import # to importo in Hive
+
+# Hive is schema on view
+# To export from Hive to MySql
+
+mysql -u root -p
+use movielens;
+CREATE TABLE exported_movies (id INTEGER, title VARCHAR(255), releaseData DATE);
+exit
+sqoop export --connect jdbc:mysql://localhost/movielens -m 1 --driver com.mysql.jdbc.Driver --table exported_movies --export-dir /apps/hive/warehouse/movies --input-fields-terminated-by '\0001'
+
+#checking if it was exported to mySQL correctely
+mysql -u root -p
+use movielens;
+select * from exported_movies limit 10;
