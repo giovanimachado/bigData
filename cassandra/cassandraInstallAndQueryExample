@@ -1,0 +1,37 @@
+# In an application, where you can trade off some consistency for a better availability, Cassandra might be a # good choice
+
+
+$ su root
+$ python -V # to check version, Cassandra requires at least Python 27
+$ yum update
+$ yum install scl-utils  # that's called a software collection, and that's going to give me the ability to switch between my Python versions.
+$ yum install centos-release-scl-rh # That's going to be the CentOS-specific component that lets me switch between Python releases.
+$ yum install python27
+$ scl enable python27 bash
+$ python -V #it will return python that is being used, in this case Python 2.7.8
+Can't just type in "yum install cassandra", because Hortonworks isn't set up with the necessary repository to pick up the Cassandra packages
+$ cd /etc/yum.repos.d
+$ vi datastax.repo # to create a Cassandra repo
+	inside vi editor:
+	[datastax] 
+	name = DataStax Repo for Apache Cassandra
+	baseurl = http://rpm.datastax.com/community
+	enabled = 1
+	gpgcheck = 0
+$ cat datastax.repo # to verify the file
+$ yum install dcs30 # package name "DataStax Cassandra"
+$ pip install sqlsh # install python required dependencies
+$ service cassandra start
+$ cqlsh # to enter in cassandra
+	> CREATE KEYSPACE movielens WITH replication = {'class':'SimpleStrategy','replication_factor':'1'} AND durable_writes = true;
+	> USE movielens;
+	> CREATE TABLE users (use_id int, age int, gender text, occupation text, zip text, PRIMARY KEY (user_id));
+	> DESCRIBE TABLE user;
+	> SELECT * FROM users;
+
+# After run the cassandraSpark.py
+$ cqlsh # to enter in cassandra
+	$ USE movielens;
+	$ SELECT * FROM users LIMIT 10;
+	$ exit
+$ service cassandra stop
