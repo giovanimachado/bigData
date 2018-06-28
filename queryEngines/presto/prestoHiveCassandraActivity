@@ -1,0 +1,30 @@
+# The Cassandra version installed in virtual machine needs at least pyhon 2.7
+scl python27 bash
+python -V
+service cassandra start
+nodetool enablethrift # necesssary to enable thrift service
+cqlsh --cqlversion="3.4.0" # connecting to cassandra's CLI
+> describe keyspaces;
+> use movielens;
+> describe tables;
+> select * from users limit 10;
+> quit
+cd etc/catalog
+ls 
+# configure Presto to Cassandra
+vi cassandra.properties
+	connector.name = cassandra
+	cassandra.contact-point=127.0.0.1
+	#:wq
+cd ../.. # two directories
+bin/launcher start 
+bin/presto --server 127.0.0.1:8090 --catalog hive,cassandra
+> show table from cassandra.movielens;
+> describe cassandra.movielens.users;
+> select * from cassandra.movielens.users limit 10;
+> select * from hive.default.ratings limit 10;
+> select u.occupation, count(*) from hive.default.ratings r join cassandra.movielens.users u on r.user_id = u.user_id group by u.occupation;
+> quit
+pwd
+bin/launcher stop
+service cassandra stop

@@ -1,0 +1,28 @@
+# log in server via ssh
+su root
+pwd
+wget https://repo1.maven.org/maven2/com/facebook/presto/presto-server/0.205/presto-server-0.205.tar.gz
+tar -xvf presto-server-0.205.tar.gz
+cd presto-server-0.205
+ls
+# there is no configuration files in etc directory, it is necessary to create end populate
+wget http://media.sundog-soft.com/hadoop/presto-hdp-config.tgz # in a cluster application it is necessary to run different configuration
+tar -xvf presto-hdp-config.tgz
+cd etc
+ls
+cd ..
+cd .. 
+cd bin # the cli must be installed in bin folder
+wget https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/0.205/presto-cli-0.205-executable.jar
+mv presto-cli-0.205-executable.jar presto
+chmod +x presto # to make the file executable
+cd ..
+pwd # verify if is inside presto-server folder
+bin/launcher start
+# now it is necessary to test the web UI 127.0.0.1:8090
+bin/presto --server 127.0.0.1:8090 --catalog hive # there is still a table in hive
+> show table form default;
+> select * from default.ratings limit 10;
+# In this point it is possible to see come informations in UI about the queries
+> select * from default.ratings where rating = 5 limit 10;
+> select count(*) from default.reatings where rating=1;
