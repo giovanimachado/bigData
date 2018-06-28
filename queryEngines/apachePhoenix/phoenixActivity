@@ -1,0 +1,24 @@
+# Run Hbase in Ambari UI
+# Phoenix works only with Hbase
+
+# In server sheel
+yum install phoenix
+cd /usr/hdp/current/phoenix-client/
+ls
+cd bin
+ls
+python sqlline.py # to run the cli
+> ! tables
+> CREATE TABLE IF NOT EXISTS us_population(
+state CHAR(2) NOT NULL.
+city VARCHAR NOT NULL,
+population BIGIBT
+CONSTRAINT my_pk PRIMARY KEY (state,city));
+> !tables
+> UPSERT INTO US_POPULATION VALUES ('NY', 'New YorK', 8143197);
+> UPSERT INTO US_POPULATION VALUES ('CA', 'California', 3844829);
+> SELECT * FORM US_POPULATION
+> SELECT * FORM US_POPULATION WHERE STATE='CA';
+> DROP TABLE US_POPULATION
+> !tables
+quit

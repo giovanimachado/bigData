@@ -1,0 +1,18 @@
+# In server shell
+pwd 
+# cd to folder of sqlline.py, probably: /usr/hdp/current/phoenix-client/bin
+python sqlline.py
+> CREATE TABLE users (USERID INTEGER NOT NULL, AGE INTEGER, GENDER CHAR(1), OCCUPATION VARCHAR, ZIP VARCHAR CONSTRAINT pk PRIMARY KEY(USERID))
+> !tables 
+> !quit
+
+cd ..
+wget http://media.sundog-soft.com/hadoop/phoenix.pig # to download the pig code
+pig phoenix.pig
+# cd to folder of sqlline.py, probably: /usr/hdp/current/phoenix-client/bin
+python sqlline.py
+> !tables
+> SELECT * FROM USERS LIMIT 10;
+> DROP TABLE users;
+> !tables
+> !quit
