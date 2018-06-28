@@ -1,5 +1,4 @@
-REGISTER /usr/hdp/current/phoenix-client/phoenix-client.jar
-# to connect pig to phoenix
+REGISTER /usr/hdp/current/phoenix-client/phoenix-client.jar # to connect pig to phoenix
 
 users = LOAD '/user/maria_dev/ml-100k/u.user' # directory where file u.user is located
 USING PigStorage('|') 
