@@ -1,0 +1,3 @@
+Mesos can allocate resources for web servers, small scripts and can be used in hadoop
+YARN can be integrated with Mesos using Myriad
+Cloudera has a distribution with Mesos instead Yarn
