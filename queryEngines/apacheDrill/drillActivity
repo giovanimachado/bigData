@@ -1,0 +1,23 @@
+# Preparing the ecossystem to use drill
+# 1 - Log in Ambari
+# 2 - Restart MongoDB
+# 3 - Upload movielens rating files to Hive
+# 
+# 1 - LOg in server via SSH
+# 2 - Execute spark to export files to MongoDB in sandbox
+
+# 1 - Download apache drill in server with wget...
+# 2 - Uncompress the file: tar -xvf apache-drill-1.9.0.tar.gz
+# 3 - cd apache-drill-1.9.0
+# 4 - bin/drillbit.sh start -Ddrill.exec.http.port=8765 this port is already open
+
+# 1 - Opendrill UI: 127.0.0.1:8765
+# 2 - In "Storage" Ennable the necessary databases and update the connection adress
+
+# To use is only necessary open the Query link:
+
+Queries examples:
+SHOW DATABASES;
+SELECT * FROM hive.movielens.ratings LIMIT 10;
+SELECT * FROM mongo.movielens.users LIMIT 10;
+SELECT u.occupation. COUNT(*) FROM hive.movielens.ratings r JOIN mongo.movielens.users u ON r.user_id = u.user_id GROUP BY u.occupation;
