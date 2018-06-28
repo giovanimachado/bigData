@@ -1,0 +1,61 @@
+#Necessário colocar 1 arquivo por pasta
+
+[Cluster]
+hdfs dfs -ls hdfs:///user/eksz/ml-100k
+hdfs dfs -mkdir hdfs:///user/eksz/ml-100k/item
+hdfs dfs -ls hdfs:///user/eksz/ml-100k
+hdfs dfs -mv hdfs:///user/eksz/ml-100k/u.item  hdfs:///user/eksz/ml-100k/item/u.item/
+hdfs dfs -mkdir hdfs:///user/eksz/ml-100k/data
+hdfs dfs -mv hdfs:///user/eksz/ml-100k/u.item  hdfs:///user/eksz/ml-100k/item/
+hdfs dfs -mv hdfs:///user/eksz/ml-100k/u.data  hdfs:///user/eksz/ml-100k/data/
+hdfs dfs -ls hdfs:///user/eksz/ml-100k
+hdfs dfs -ls hdfs:///user/eksz/ml-100k/data
+
+
+hive>
+create database teste;
+show tables;
+
+# create table names from u.item file
+create external table names(
+movie_id int,
+name string,
+release_date string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '|' 
+location '/user/eksz/ml-100k/item';
+
+# create table ratings from u.data file
+create external table ratings(
+userID int,
+movieID int,
+rating int,
+epochseconds int)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' 
+location '/user/eksz/ml-100k/data';
+
+
+hive>
+DROP VIEW IF EXISTS	topMovieIDs;
+
+CREATE VIEW topMovieIDs AS
+SELECT movieid, count(movieid) as ratingCount
+FROM teste.ratings
+GROUP BY movieid
+ORDER BY ratingCount DESC;
+
+set hive.execution.engine=mr;
+SELECT n.name, ratingCount
+FROM topMovieIDs t JOIN teste.names n ON t.movieid = n.movie_id;
+# this query takes 62 seconds with MapReduce
+
+set hive.execution.engine=tez
+SELECT n.name, ratingCount
+FROM topMovieIDs t JOIN teste.names n ON t.movieid = n.movie_id;
+# this query takes 16 seconds with MapReduce
+
+Drop TABLE IF EXISTS names;
+Drop TABLE IF EXISTS ratings;
+Drop TABLE IF EXISTS topmovieids;
+
+# DROP (DATABASE|SCHEMA) [IF EXISTS] database_name [RESTRICT | CASCADE];
+DROP DATABASE teste CASCADE;
