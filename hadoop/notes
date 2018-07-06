@@ -1,3 +1,9 @@
 Mesos can allocate resources for web servers, small scripts and can be used in hadoop
 YARN can be integrated with Mesos using Myriad
 Cloudera has a distribution with Mesos instead Yarn
+
+Oozie is a tool to create a workflow of jobs in hadoop
+
+Zeppelin is very similar to a iPhython notebook
+
+HUE (Hadoop User Experience): It has the same objective as Apache Ambari summed with Zeppelin. Hue has a Oozie editor. 
